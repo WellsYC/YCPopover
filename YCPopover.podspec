@@ -9,7 +9,7 @@ s.license      = { :type => "MIT", :file => "LICENSE" }
 s.author       = { "WellsYC" => "461620115@qq.com" }
 #s.social_media_url   = "http://weibo.com/u/5348162268"
 s.source       = { :git => "https://github.com/WellsYC/YCPopover.git", :tag => s.version }
-s.source_files  = "YCPopover/**/*"
+s.source_files  = "YCPopover/YCPopoverModule/*.{h,m}"
 #s.resources   = "YCPopover/YJSettingTableView.bundle"
 s.requires_arc = true
 end
