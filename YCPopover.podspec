@@ -10,7 +10,7 @@ s.license      = { :type => "MIT", :file => "LICENSE" }
 s.author       = { "WellsYC" => "461620115@qq.com" }
 s.license      = "MIT"
 s.source       = { :git => "https://github.com/WellsYC/YCPopover.git", :tag => s.version }
-s.source_files  = "YCPopover/*"
+s.source_files  = "*"
 s.requires_arc = true
 
 end
