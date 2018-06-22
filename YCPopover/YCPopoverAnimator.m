@@ -15,12 +15,12 @@
 @interface YCPopoverAnimator()
 {
     BOOL                       _isPresented;
-    CGFloat                    _presentedHeight;
     CGSize                     _presentedSize;
 }
 @property(nonatomic,strong)YCPresentationController  *presentationController;
 @property(nonatomic,copy)  YCCompleteHandle           completeHandle;
 @property(nonatomic,assign)YCPopoverType              popoverType;
+@property(nonatomic,assign)CGFloat                    presentedHeight;
 
 
 @end
@@ -120,7 +120,7 @@
     }else{
         [UIView animateWithDuration:kAnimationDuration animations:^{
             weakSelf.presentationController.coverView.alpha = 0.0f;
-            presentedView.transform = CGAffineTransformMakeTranslation(0, _presentedHeight);
+            presentedView.transform = CGAffineTransformMakeTranslation(0, weakSelf.presentedHeight);
         } completion:^(BOOL finished) {
             [presentedView removeFromSuperview];
             [transitionContext completeTransition:YES];
