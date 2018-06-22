@@ -8,19 +8,20 @@
 
 #import "YCPopoverAnimator.h"
 #import "YCPresentationController.h"
+#import "YCPopoverMacro.h"
 
 #define kAnimationDuration 0.3
 
 @interface YCPopoverAnimator()
 {
     BOOL                       _isPresented;
-    YCPresentationController  *_presentation;
-    
     CGFloat                    _presentedHeight;
     CGSize                     _presentedSize;
 }
-@property(nonatomic,copy)YCCompleteHandle           completeHandle;
-@property(nonatomic,assign)YCPopoverType             popoverType;
+@property(nonatomic,strong)YCPresentationController  *presentationController;
+@property(nonatomic,copy)  YCCompleteHandle           completeHandle;
+@property(nonatomic,assign)YCPopoverType              popoverType;
+
 
 @end
 
@@ -42,7 +43,7 @@
     }else{
         presentation.presentedHeight = _presentedHeight;
     }
-    _presentation = presentation;
+    self.presentationController = presentation;
     return presentation;
 }
 
@@ -72,20 +73,20 @@
 - (void)animationForPresentedView:(nonnull id<UIViewControllerContextTransitioning>)transitionContext{
     UIView *presentedView = [transitionContext viewForKey:UITransitionContextToViewKey];
     [transitionContext.containerView addSubview:presentedView];
-    _presentation.coverView.alpha = 0.0f;
+    self.presentationController.coverView.alpha = 0.0f;
     // 设置阴影
     transitionContext.containerView.layer.shadowColor = [UIColor blackColor].CGColor;
     transitionContext.containerView.layer.shadowOffset = CGSizeMake(0, 5);
     transitionContext.containerView.layer.shadowOpacity = 0.5f;
     transitionContext.containerView.layer.shadowRadius = 10.0f;
     
+    WeakSelf(weakSelf)
     if (self.popoverType == YCPopoverTypeAlert) {
-    
         presentedView.alpha = 0.0f;
         presentedView.transform = CGAffineTransformMakeScale(1.2, 1.2);
         // 动画弹出
         [UIView animateWithDuration:kAnimationDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            _presentation.coverView.alpha = 1.0f;
+            weakSelf.presentationController.coverView.alpha = 1.0f;
             presentedView.alpha = 1.0f;
             presentedView.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished) {
@@ -94,7 +95,7 @@
     }else{
         presentedView.transform = CGAffineTransformMakeTranslation(0, _presentedHeight);
         [UIView animateWithDuration:kAnimationDuration animations:^{
-            _presentation.coverView.alpha = 1.0f;
+            weakSelf.presentationController.coverView.alpha = 1.0f;
             presentedView.transform = CGAffineTransformIdentity;
         } completion:^(BOOL finished) {
             [transitionContext completeTransition:YES];
@@ -105,11 +106,12 @@
 // Dismissed
 - (void)animationForDismissedView:(nonnull id<UIViewControllerContextTransitioning>)transitionContext{
     UIView *presentedView = [transitionContext viewForKey:UITransitionContextFromViewKey];
-
+    
+    WeakSelf(weakSelf)
     if (self.popoverType == YCPopoverTypeAlert) {
         // 消失
         [UIView animateWithDuration:kAnimationDuration delay:0 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-            _presentation.coverView.alpha = 0.0f;
+            weakSelf.presentationController.coverView.alpha = 0.0f;
             presentedView.alpha = 0.0f;
         } completion:^(BOOL finished) {
             [presentedView removeFromSuperview];
@@ -117,7 +119,7 @@
         }];
     }else{
         [UIView animateWithDuration:kAnimationDuration animations:^{
-            _presentation.coverView.alpha = 0.0f;
+            weakSelf.presentationController.coverView.alpha = 0.0f;
             presentedView.transform = CGAffineTransformMakeTranslation(0, _presentedHeight);
         } completion:^(BOOL finished) {
             [presentedView removeFromSuperview];
