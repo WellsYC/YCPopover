@@ -30,26 +30,24 @@ you just need define a viewcontroller(eg. PopoverViewController) , there are two
 you just to write a line to show.
 
 ##### ①ActionSheet
-
 ```
 PopoverViewController *vc = [PopoverViewController new];
 [self yc_centerPresentController:vc presentedSize:CGSizeMake(200, 300) completeHandle:^(BOOL presented) {
-if (presented) {
-NSLog(@"弹出了");
-}else{
-NSLog(@"消失了");
-}
+  if (presented) {
+    NSLog(@"弹出了");
+  }else{
+    NSLog(@"消失了");
+  }
 }];
 ```
 ##### ②Alert
 ```
 PopoverViewController *vc = [PopoverViewController new];
 [self yc_bottomPresentController:vc presentedHeight:220 completeHandle:^(BOOL presented) {
-if (presented) {
-NSLog(@"弹出了");
-}else{
-NSLog(@"消失了");
-}
+  if (presented) {
+    NSLog(@"弹出了");
+  }else{
+    NSLog(@"消失了");
+  }
 }];
 ```
-
